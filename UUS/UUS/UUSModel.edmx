@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище UUSModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="courseID" />
+          </Key>
+          <Property Name="courseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userID" Type="int" />
+          <Property Name="courseName" Type="nvarchar" MaxLength="50" />
+          <Property Name="numberOfHours" Type="int" />
+          <Property Name="reportForm" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="groupID" />
+          </Key>
+          <Property Name="groupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="groupNMB" Type="int" />
+          <Property Name="specialtyID" Type="int" />
+        </EntityType>
+        <EntityType Name="Journal">
+          <Key>
+            <PropertyRef Name="journalID" />
+          </Key>
+          <Property Name="journalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="courceID" Type="int" />
+          <Property Name="studentID" Type="int" />
+          <Property Name="groupID" Type="int" />
+          <Property Name="userID" Type="int" />
+          <Property Name="semestr" Type="int" />
+          <Property Name="score" Type="int" />
+          <Property Name="dateScore" Type="date" />
+        </EntityType>
+        <EntityType Name="Specialty">
+          <Key>
+            <PropertyRef Name="specialtyID" />
+          </Key>
+          <Property Name="specialtyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="specialtyName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="studentID" />
+          </Key>
+          <Property Name="studentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userID" Type="int" />
+          <Property Name="groupID" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="30" />
+          <Property Name="password" Type="nvarchar" MaxLength="30" />
+          <Property Name="surname" Type="nvarchar" MaxLength="30" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" />
+          <Property Name="patronymic" Type="nvarchar" MaxLength="30" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+          <Property Name="phone" Type="nvarchar" MaxLength="30" />
+          <Property Name="role" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK__Course__userID__412EB0B6">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Groups__specialt__4222D4EF">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="Groups" Type="Self.Groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="specialtyID" />
+            </Principal>
+            <Dependent Role="Groups">
+              <PropertyRef Name="specialtyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__courceI__4316F928">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="courseID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="courceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__groupID__440B1D61">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="groupID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="groupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__student__44FF419A">
+          <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="studentID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="studentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__userID__45F365D3">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__groupI__46E78A0C">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="0..1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="groupID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="groupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__userID__47DBAE45">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SelectAllJournal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="Хранилище UUSModelContainer">
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Journal" EntityType="Self.Journal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Course__userID__412EB0B6" Association="Self.FK__Course__userID__412EB0B6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Groups__specialt__4222D4EF" Association="Self.FK__Groups__specialt__4222D4EF">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__courceI__4316F928" Association="Self.FK__Journal__courceI__4316F928">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__groupID__440B1D61" Association="Self.FK__Journal__groupID__440B1D61">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__student__44FF419A" Association="Self.FK__Journal__student__44FF419A">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__userID__45F365D3" Association="Self.FK__Journal__userID__45F365D3">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__groupI__46E78A0C" Association="Self.FK__Students__groupI__46E78A0C">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__userID__47DBAE45" Association="Self.FK__Students__userID__47DBAE45">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UUSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="courseID" />
+          </Key>
+          <Property Name="courseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="courseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="numberOfHours" Type="Int32" />
+          <Property Name="reportForm" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Course__userID__412EB0B6" FromRole="Course" ToRole="Users" />
+          <NavigationProperty Name="Journal" Relationship="Self.FK__Journal__courceI__4316F928" FromRole="Course" ToRole="Journal" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="groupID" />
+          </Key>
+          <Property Name="groupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="groupNMB" Type="Int32" />
+          <Property Name="specialtyID" Type="Int32" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK__Groups__specialt__4222D4EF" FromRole="Groups" ToRole="Specialty" />
+          <NavigationProperty Name="Journal" Relationship="Self.FK__Journal__groupID__440B1D61" FromRole="Groups" ToRole="Journal" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Students__groupI__46E78A0C" FromRole="Groups" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="Journal">
+          <Key>
+            <PropertyRef Name="journalID" />
+          </Key>
+          <Property Name="journalID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="courceID" Type="Int32" />
+          <Property Name="studentID" Type="Int32" />
+          <Property Name="groupID" Type="Int32" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="semestr" Type="Int32" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="dateScore" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Course" Relationship="Self.FK__Journal__courceI__4316F928" FromRole="Journal" ToRole="Course" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Journal__groupID__440B1D61" FromRole="Journal" ToRole="Groups" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Journal__student__44FF419A" FromRole="Journal" ToRole="Students" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Journal__userID__45F365D3" FromRole="Journal" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Specialty">
+          <Key>
+            <PropertyRef Name="specialtyID" />
+          </Key>
+          <Property Name="specialtyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="specialtyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Groups__specialt__4222D4EF" FromRole="Specialty" ToRole="Groups" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="studentID" />
+          </Key>
+          <Property Name="studentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="groupID" Type="Int32" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Students__groupI__46E78A0C" FromRole="Students" ToRole="Groups" />
+          <NavigationProperty Name="Journal" Relationship="Self.FK__Journal__student__44FF419A" FromRole="Students" ToRole="Journal" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Students__userID__47DBAE45" FromRole="Students" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="surname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="patronymic" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="role" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Course" Relationship="Self.FK__Course__userID__412EB0B6" FromRole="Users" ToRole="Course" />
+          <NavigationProperty Name="Journal" Relationship="Self.FK__Journal__userID__45F365D3" FromRole="Users" ToRole="Journal" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Students__userID__47DBAE45" FromRole="Users" ToRole="Students" />
+        </EntityType>
+        <Association Name="FK__Course__userID__412EB0B6">
+          <End Role="Users" Type="UUSModel.User" Multiplicity="0..1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__courceI__4316F928">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="courseID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="courceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Groups__specialt__4222D4EF">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="Groups" Type="UUSModel.Group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="specialtyID" />
+            </Principal>
+            <Dependent Role="Groups">
+              <PropertyRef Name="specialtyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__groupID__440B1D61">
+          <End Role="Groups" Type="UUSModel.Group" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="groupID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="groupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__groupI__46E78A0C">
+          <End Role="Groups" Type="UUSModel.Group" Multiplicity="0..1" />
+          <End Role="Students" Type="UUSModel.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="groupID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="groupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__student__44FF419A">
+          <End Role="Students" Type="UUSModel.Student" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="studentID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="studentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Journal__userID__45F365D3">
+          <End Role="Users" Type="UUSModel.User" Multiplicity="0..1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Students__userID__47DBAE45">
+          <End Role="Users" Type="UUSModel.User" Multiplicity="0..1" />
+          <End Role="Students" Type="UUSModel.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UUSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Course" EntityType="Self.Course" />
+          <EntitySet Name="Groups" EntityType="UUSModel.Group" />
+          <EntitySet Name="Journal" EntityType="Self.Journal" />
+          <EntitySet Name="Specialty" EntityType="Self.Specialty" />
+          <EntitySet Name="Students" EntityType="UUSModel.Student" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="UUSModel.User" />
+          <AssociationSet Name="FK__Course__userID__412EB0B6" Association="Self.FK__Course__userID__412EB0B6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__courceI__4316F928" Association="Self.FK__Journal__courceI__4316F928">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Groups__specialt__4222D4EF" Association="Self.FK__Groups__specialt__4222D4EF">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__groupID__440B1D61" Association="Self.FK__Journal__groupID__440B1D61">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__groupI__46E78A0C" Association="Self.FK__Students__groupI__46E78A0C">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__student__44FF419A" Association="Self.FK__Journal__student__44FF419A">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Journal__userID__45F365D3" Association="Self.FK__Journal__userID__45F365D3">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Students__userID__47DBAE45" Association="Self.FK__Students__userID__47DBAE45">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <FunctionImport Name="SelectAllJournal" ReturnType="Collection(UUSModel.SelectAllJournal_Result)" />
+        </EntityContainer>
+        <ComplexType Name="SelectAllJournal_Result">
+          <Property Type="Int32" Name="journalID" Nullable="false" />
+          <Property Type="String" Name="CourceName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FIO_Student" Nullable="true" MaxLength="92" />
+          <Property Type="Int32" Name="GroupNmb" Nullable="true" />
+          <Property Type="String" Name="FIO_Teacher" Nullable="true" MaxLength="92" />
+          <Property Type="Int32" Name="Semestr" Nullable="true" />
+          <Property Type="Int32" Name="Score" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="Int32" Name="userID" Nullable="true" />
+          <Property Type="Int32" Name="studentID" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище UUSModelContainer" CdmEntityContainer="UUSEntities">
+          <EntitySetMapping Name="Course">
+            <EntityTypeMapping TypeName="UUSModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="courseID" ColumnName="courseID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="courseName" ColumnName="courseName" />
+                <ScalarProperty Name="numberOfHours" ColumnName="numberOfHours" />
+                <ScalarProperty Name="reportForm" ColumnName="reportForm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="UUSModel.Group">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="groupID" ColumnName="groupID" />
+                <ScalarProperty Name="groupNMB" ColumnName="groupNMB" />
+                <ScalarProperty Name="specialtyID" ColumnName="specialtyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Journal">
+            <EntityTypeMapping TypeName="UUSModel.Journal">
+              <MappingFragment StoreEntitySet="Journal">
+                <ScalarProperty Name="journalID" ColumnName="journalID" />
+                <ScalarProperty Name="courceID" ColumnName="courceID" />
+                <ScalarProperty Name="studentID" ColumnName="studentID" />
+                <ScalarProperty Name="groupID" ColumnName="groupID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="semestr" ColumnName="semestr" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="dateScore" ColumnName="dateScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Specialty">
+            <EntityTypeMapping TypeName="UUSModel.Specialty">
+              <MappingFragment StoreEntitySet="Specialty">
+                <ScalarProperty Name="specialtyID" ColumnName="specialtyID" />
+                <ScalarProperty Name="specialtyName" ColumnName="specialtyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="UUSModel.Student">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="studentID" ColumnName="studentID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="groupID" ColumnName="groupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="UUSModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="UUSModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SelectAllJournal" FunctionName="Хранилище UUSModel.SelectAllJournal">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="UUSModel.SelectAllJournal_Result">
+                <ScalarProperty Name="journalID" ColumnName="journalID" />
+                <ScalarProperty Name="CourceName" ColumnName="CourceName" />
+                <ScalarProperty Name="FIO_Student" ColumnName="FIO_Student" />
+                <ScalarProperty Name="GroupNmb" ColumnName="GroupNmb" />
+                <ScalarProperty Name="FIO_Teacher" ColumnName="FIO_Teacher" />
+                <ScalarProperty Name="Semestr" ColumnName="Semestr" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="studentID" ColumnName="studentID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
